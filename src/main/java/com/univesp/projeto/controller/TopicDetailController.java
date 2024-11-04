@@ -26,8 +26,8 @@ public class TopicDetailController {
     @GetMapping("/topics-detail/{id}")
     public String showDetailById(@PathVariable("id") Long id,  ModelMap model){
         Hole item = db.getHoleById(id);
-        model.addAttribute("title","Univesp - Projeto Grupo 9");
-        model.addAttribute("grupo","Grupo 9");
+        model.addAttribute("title","Univesp - Projeto Grupo 22");
+        model.addAttribute("grupo","Grupo 22");
         model.addAttribute("item",item);
         model.addAttribute("folder",UPLOAD_DIRECTORY);
         System.out.println("ShowDetailById  ID passed: "+id+", object fetched: "+item);

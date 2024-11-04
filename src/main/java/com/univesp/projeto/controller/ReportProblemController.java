@@ -35,30 +35,34 @@ public class ReportProblemController {
     }
 
     @PostMapping({"/report-problem","/report-problem.html"})
-    public String uploadImage(Hole hole, @RequestParam("image") MultipartFile file) throws IOException {
-        Long maxId = db.getMaxId()+1;
-        Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-        System.out.println("Original file name, being uploaded: "+file.getOriginalFilename());
-        if(!file.isEmpty()){
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public String uploadImage(Hole hole, @RequestParam("image") MultipartFile file) {
+        try {
+            Long maxId = db.getMaxId() + 1;
+            Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+            System.out.println("Original file name, being uploaded: " + file.getOriginalFilename());
 
-            FileUploadUtil.saveFile(UPLOAD_DIRECTORY,fileName,file);
-            javaxt.io.Image image = new javaxt.io.Image(UPLOAD_DIRECTORY+"/"+fileName);
-            double[] gps = image.getGPSCoordinate();
+            if (!file.isEmpty()) {
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-            hole.setFotoId(fileName);
-            hole.setDate(timeStamp);
-            hole.setLatitude(Double.toString(gps[1]));
-            hole.setLongitude(Double.toString(gps[0]));
+                FileUploadUtil.saveFile(UPLOAD_DIRECTORY, fileName, file);
+                javaxt.io.Image image = new javaxt.io.Image(UPLOAD_DIRECTORY + "/" + fileName);
+                double[] gps = image.getGPSCoordinate();
 
-        }else{
-            hole.setFotoId(null);
-            hole.setDate(timeStamp);
-            hole.setLatitude("1");
-            hole.setLongitude("1");
-
+                hole.setFotoId(fileName);
+                hole.setDate(timeStamp);
+                hole.setLatitude(Double.toString(gps[1]));
+                hole.setLongitude(Double.toString(gps[0]));
+            } else {
+                hole.setFotoId(null);
+                hole.setDate(timeStamp);
+                hole.setLatitude("1");
+                hole.setLongitude("1");
+            }
+            db.addHole(hole);
+            return "redirect:index";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";  // Redireciona para uma página de erro personalizada ou exibe uma mensagem de erro
         }
-        db.addHole(hole);
-        return "redirect:index";
     }
 }
