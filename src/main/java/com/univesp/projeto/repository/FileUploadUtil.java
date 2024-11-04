@@ -9,21 +9,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import java.io.File;
+import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
+
 public class FileUploadUtil {
 
     public static void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
-        Path uploadPath = Paths.get(uploadDir);
-
-        if(!Files.exists(uploadPath)){
-            Files.createDirectories(uploadPath);
+        File uploadPath = new File(uploadDir);
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
         }
 
-        try(InputStream inputStream = multipartFile.getInputStream()){
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(inputStream,filePath, StandardCopyOption.REPLACE_EXISTING);
-        }catch(IOException e){
-            throw new IOException(e.getMessage());
-        }
-
+        File file = new File(uploadDir + "/" + fileName);
+        multipartFile.transferTo(file);
     }
 }
