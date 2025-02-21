@@ -1,0 +1,10 @@
+com\univesp\projeto\repository\DatabaseService.class
+com\univesp\projeto\repository\FileUploadUtil.class
+com\univesp\projeto\controller\HomeController.class
+com\univesp\projeto\controller\ReportProblemController.class
+com\univesp\projeto\ProjetoApplication.class
+com\univesp\projeto\controller\ContactController.class
+com\univesp\projeto\model\Hole.class
+com\univesp\projeto\controller\TopicListingController.class
+com\univesp\projeto\controller\TopicDetailController.class
+com\univesp\projeto\model\HoleMapper.class
