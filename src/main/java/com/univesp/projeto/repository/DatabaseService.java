@@ -26,6 +26,10 @@ public class DatabaseService {
         String query = "SELECT * FROM HOLE";
         return template.query(query,new HoleMapper());
     }
+    public int deleteHoleById(long id){
+        String query = "DELETE FROM HOLE WHERE ID = ?";
+        return template.update(query, id);
+    }
     public Hole getHoleById(long id){
         String query = "SELECT * FROM HOLE WHERE ID = ?";
         return template.queryForObject(query,new Object[] {id},new HoleMapper());

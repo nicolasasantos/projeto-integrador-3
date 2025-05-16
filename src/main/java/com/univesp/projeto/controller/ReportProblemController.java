@@ -38,7 +38,7 @@ public class ReportProblemController {
     @PostMapping({"/report-problem","/report-problem.html"})
     public String uploadImage(Hole hole, @RequestParam("image") MultipartFile file) {
         try {
-            Long maxId = db.getMaxId() + 1;
+
             Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
             System.out.println("Original file name, being uploaded: " + file.getOriginalFilename());
 

@@ -28,7 +28,7 @@ public class ApiPostController {
                                               @RequestPart("foto") MultipartFile file) throws IOException {
         try {
             Hole hole = new Hole();
-            Long maxId = db.getMaxId() + 1;
+
             Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
             System.out.println("Original file name, being uploaded: " + file.getOriginalFilename());
 
