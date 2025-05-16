@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 @Controller
-public class GetById {
+public class ApiGetController {
     @Autowired
     DatabaseService db;
 
@@ -43,6 +45,33 @@ public class GetById {
         data.put("FotoId", item.getFotoId());
 
         return data;
+    }
+
+    @GetMapping({"/api/get/","/api/get"})
+    @ResponseBody
+    public List<Map<String, String>> getAll(ModelMap model) {
+        List<Hole> items = db.getHoles();
+
+        model.addAttribute("title", "Univesp - Projeto Grupo 09");
+        model.addAttribute("grupo", "Grupo 09");
+        model.addAttribute("folder", UPLOAD_DIRECTORY);
+
+        List<Map<String, String>> dataList = new ArrayList<>();
+
+        for (Hole item : items) {
+            Map<String, String> data = new HashMap<>();
+            data.put("Name", item.getName());
+            data.put("Date", item.getDate().toString());
+            data.put("Latitude", item.getLatitude().toString());
+            data.put("Longitude", item.getLongitude().toString());
+            data.put("Observation", item.getObservation());
+            data.put("Fixed", String.valueOf(item.isFixed()));
+            data.put("FotoId", item.getFotoId());
+
+            dataList.add(data);
+        }
+
+        return dataList;
     }
 
 }

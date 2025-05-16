@@ -46,7 +46,11 @@ public class ReportProblemController {
 
                 FileUploadUtil.saveFile(UPLOAD_DIRECTORY, fileName, file);
                 javaxt.io.Image image = new javaxt.io.Image(UPLOAD_DIRECTORY + "/" + fileName);
+
                 double[] gps = image.getGPSCoordinate();
+                if(gps == null){
+                    gps = new double[]{-47.8906831,-22.0178682};
+                }
 
                 hole.setFotoId(fileName);
                 hole.setDate(timeStamp);
