@@ -21,8 +21,8 @@ public class TopicListingController {
 
         System.out.println(items);
 
-        model.addAttribute("title","Univesp - Projeto Grupo 22");
-        model.addAttribute("grupo","Grupo 22");
+        model.addAttribute("title","Univesp - Projeto Grupo 09");
+        model.addAttribute("grupo","Grupo 09");
         model.addAttribute("items",items);
 
 

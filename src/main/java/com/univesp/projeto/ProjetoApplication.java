@@ -9,6 +9,6 @@ public class ProjetoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetoApplication.class, args);
-		System.out.println("Process started: Site Grupo 22 - Univesp");
+		System.out.println("Process started: Site Grupo 09 - Univesp");
 	}
 }
