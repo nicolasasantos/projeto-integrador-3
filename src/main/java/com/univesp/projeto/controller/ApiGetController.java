@@ -22,7 +22,7 @@ public class ApiGetController {
     public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/img";
 
 
-    @GetMapping("/api/get/{id}")
+    @GetMapping("/api/{id}")
     @ResponseBody
     public Map<String, String> getById(@PathVariable("id") Long id, ModelMap model){
         Hole item = db.getHoleById(id);
@@ -47,7 +47,7 @@ public class ApiGetController {
         return data;
     }
 
-    @GetMapping({"/api/get/","/api/get"})
+    @GetMapping({"/api/","/api"})
     @ResponseBody
     public List<Map<String, String>> getAll(ModelMap model) {
         List<Hole> items = db.getHoles();
