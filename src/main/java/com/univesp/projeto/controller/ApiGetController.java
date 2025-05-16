@@ -36,6 +36,7 @@ public class ApiGetController {
         System.out.println(UPLOAD_DIRECTORY);
 
         Map<String, String> data = new HashMap<>();
+        data.put("Id", String.valueOf(item.getId()));
         data.put("Name", item.getName());
         data.put("Date", item.getDate().toString());
         data.put("Latitude", item.getLatitude().toString());
@@ -61,6 +62,7 @@ public class ApiGetController {
         for (Hole item : items) {
             Map<String, String> data = new HashMap<>();
             data.put("Name", item.getName());
+            data.put("Id", String.valueOf(item.getId()));
             data.put("Date", item.getDate().toString());
             data.put("Latitude", item.getLatitude().toString());
             data.put("Longitude", item.getLongitude().toString());

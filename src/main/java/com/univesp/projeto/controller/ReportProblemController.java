@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 
@@ -45,7 +46,7 @@ public class ReportProblemController {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
                 FileUploadUtil.saveFile(UPLOAD_DIRECTORY, fileName, file);
-                javaxt.io.Image image = new javaxt.io.Image(UPLOAD_DIRECTORY + "/" + fileName);
+                javaxt.io.Image image = new javaxt.io.Image(UPLOAD_DIRECTORY + File.separator + fileName);
 
                 double[] gps = image.getGPSCoordinate();
                 if(gps == null){

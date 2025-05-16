@@ -24,7 +24,6 @@ public class DatabaseService {
 
     public List<Hole> getHoles(){
         String query = "SELECT * FROM HOLE";
-
         return template.query(query,new HoleMapper());
     }
     public Hole getHoleById(long id){
@@ -35,6 +34,11 @@ public class DatabaseService {
     public void addHole(Hole hole){
         String query = "INSERT INTO HOLE (NAME,DATE,LATITUDE,LONGITUDE,OBS,FIXED,FOTO_ID) VALUES (?,?,?,?,?,?,?)";
         template.update(query,hole.getName(),hole.getDate(),hole.getLatitude(),hole.getLongitude(),hole.getObservation(),hole.isFixed(),hole.getFotoId());
+    }
+
+    public void updateHole(Hole hole){
+        String query = "UPDATE HOLE SET NAME = ?, DATE = ?, LATITUDE = ?, LONGITUDE = ?, OBS = ?, FIXED = ?, FOTO_ID = ? WHERE ID = ?";
+        template.update(query,hole.getName(),hole.getDate(),hole.getLatitude(),hole.getLongitude(),hole.getObservation(),hole.isFixed(),hole.getFotoId(),hole.getId());
     }
 
     public Long getMaxId(){
