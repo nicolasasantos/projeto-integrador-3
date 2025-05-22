@@ -1,16 +1,17 @@
 {
-    "name": "projeto-integrador-3",
-    "version": "1.0.0",
-    "description": "Projeto Integrador 3 com testes automatizados usando Cypress.",
-    "scripts": {
-      "test": "npx cypress run",
-      "test:open": "npx cypress open"
-    },
-    "keywords": ["Cypress", "Projeto Integrador", "Testes Automatizados"],
-    "author": "Grupo 9 - Projeto Integrador 3",
-    "license": "ISC",
-    "devDependencies": {
-      "cypress": "^12.17.0",
-      "cypress-file-upload": "^5.0.8"
-    }
+  "name": "projeto-integrador-3",
+  "version": "1.0.0",
+  "description": "Projeto Integrador 3 com testes automatizados usando Cypress.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "npx cypress run",
+    "test:open": "npx cypress open"
+  },
+  "keywords": ["Cypress", "Projeto Integrador", "Testes Automatizados"],
+  "author": "Grupo 9 - Projeto Integrador 3",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^12.17.0",
+    "cypress-file-upload": "^5.0.8"
   }
+}
