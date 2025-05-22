@@ -37,8 +37,7 @@ jobs:
       # 6. Executar testes Cypress
       - name: Run Cypress tests
         run: |
-          echo "Iniciando o servidor..."
           echo "Executando testes Cypress..."
-          echo "Testes Cypress concluídos com sucesso!"
+          npx cypress run --headless --browser chrome
         env:
           CI: true
