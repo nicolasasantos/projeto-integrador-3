@@ -1,10 +1,10 @@
 describe('Testando navegação na página do PI2', () => {
   it('Deve carregar a página inicial', () => {
-    cy.visit('http://localhost:8080');
+    cy.visit('/');
      });
 
   it('Deve realizar o clique em "Início"', () => {
-      cy.visit('http://localhost:8080');
+      cy.visit('/');
       cy.wait(1000);
       cy.contains('a', 'Início')
         .should('be.visible')
@@ -12,7 +12,7 @@ describe('Testando navegação na página do PI2', () => {
         });
 
   it('Deve realizar o clique em "Reportar Problema"', () => {
-    cy.visit('http://localhost:8080');
+    cy.visit('/');
     cy.wait(1000);
     cy.contains('a', 'Reportar Problema')
       .should('be.visible')
@@ -20,7 +20,7 @@ describe('Testando navegação na página do PI2', () => {
       });
 
   it('Deve realizar o clique em "Como Reportar"', () => {
-      cy.visit('http://localhost:8080');
+      cy.visit('/');
       cy.wait(1000);
       cy.contains('a', 'Como Reportar')
         .scrollIntoView()
@@ -29,7 +29,7 @@ describe('Testando navegação na página do PI2', () => {
         });
 
   it('Deve realizar o clique em "Perguntas Frequentes"', () => {
-      cy.visit('http://localhost:8080');
+      cy.visit('/');
       cy.wait(1000);
       cy.contains('a', 'Perguntas Frequentes')
         .scrollIntoView()
@@ -38,7 +38,7 @@ describe('Testando navegação na página do PI2', () => {
         });
 
   it('Deve realizar o clique em "Prefeitura"', () => {
-      cy.visit('http://localhost:8080');
+      cy.visit('/');
       cy.wait(1000);
       cy.contains('a', 'Prefeitura')
         .should('be.visible')
@@ -46,7 +46,7 @@ describe('Testando navegação na página do PI2', () => {
         });
 
   it('Deve realizar o clique em "Outros"', () => {
-        cy.visit('http://localhost:8080');
+        cy.visit('/');
         cy.wait(1000);
         cy.contains('a', 'Outros')
           .should('be.visible')
