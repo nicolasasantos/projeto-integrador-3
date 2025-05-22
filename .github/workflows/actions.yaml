@@ -43,18 +43,18 @@ jobs:
           npm start &
         env:
           PORT: 8080
-
+    
       # 6. Aguardar o servidor estar acessível
       - name: Wait for server to be ready
         run: |
           echo "Aguardando o servidor estar acessível em http://localhost:8080..."
-          npx wait-on http://localhost:8080 --timeout 30000
-
+          npx wait-on http://localhost:8080 --timeout 60000
+    
       # 7. Verificar se o servidor está rodando
       - name: Check server status
         run: |
           curl -I http://localhost:8080 || echo "Servidor não está acessível!"
-
+     
       # 8. Executar testes Cypress
       - name: Run Cypress tests
         run: npx cypress run
