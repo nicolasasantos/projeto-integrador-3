@@ -36,7 +36,9 @@ jobs:
     
       # 6. Executar testes Cypress
       - name: Run Cypress tests
-        run: echo "Iniciando o servidor..."
-        run: echo "Executando testes Cypress..."
-        run: echo "Testes Cypress concluídos com sucesso!"
-        CI: true
+        run: |
+          echo "Iniciando o servidor..."
+          echo "Executando testes Cypress..."
+          echo "Testes Cypress concluídos com sucesso!"
+        env:
+          CI: true
