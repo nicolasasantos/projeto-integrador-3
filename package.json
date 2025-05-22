@@ -7,11 +7,18 @@
     "test": "npx cypress run",
     "test:open": "npx cypress open"
   },
-  "keywords": ["Cypress", "Projeto Integrador", "Testes Automatizados"],
+  "keywords": [
+    "Cypress",
+    "Projeto Integrador",
+    "Testes Automatizados"
+  ],
   "author": "Grupo 9 - Projeto Integrador 3",
   "license": "ISC",
   "devDependencies": {
     "cypress": "^12.17.0",
     "cypress-file-upload": "^5.0.8"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }
