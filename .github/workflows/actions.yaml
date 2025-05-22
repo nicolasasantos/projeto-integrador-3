@@ -12,34 +12,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout do código
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    # 2. Configurar Node.js para Cypress
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-
-    # 3. Instalar dependências do projeto
-    - name: Install dependencies
-      run: npm install
-
-    # 4. Iniciar o servidor da aplicação
-    - name: Start application server
-      run: |
-        echo "Iniciando o servidor..."
-        npm start &
-      env:
-        PORT: 8080
-
-    # 5. Aguardar o servidor estar acessível
-    - name: Wait for server to be ready
-      run: npx wait-on http://localhost:8080 --timeout 60000
-  
-    # 6. Executar testes Cypress
-    - name: Run Cypress tests
-      run: npx cypress run
-      env:
-        CI: true
+      # 1. Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+    
+      # 2. Configurar Node.js para Cypress
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+    
+      # 3. Instalar dependências do projeto
+      - name: Install dependencies
+        run: npm install
+    
+      # 4. Iniciar o servidor da aplicação
+      - name: Start application server
+        run: |
+          echo "Iniciando o servidor..."
+          nohup npm start &
+        env:
+          PORT: 8080
+    
+      # 5. Aguardar o servidor estar acessível
+      - name: Wait for server to be ready
+        run: |
+          echo "Aguardando o servidor estar acessível em http://localhost:8080..."
+          npx wait-on http://localhost:8080 --timeout 120000
+    
+      # 6. Executar testes Cypress
+      - name: Run Cypress tests
+        run: npx cypress run
+        env:
+          CI: true
