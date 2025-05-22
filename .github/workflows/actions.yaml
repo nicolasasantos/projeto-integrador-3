@@ -9,53 +9,24 @@ on:
 
 jobs:
   run-tests:
-    if: >
-      github.event.pull_request.base.ref == 'main' && 
-      github.event.pull_request.head.ref == 'qa' || 
-      github.event.pull_request.base.ref != 'main'
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Exibir mensagem inicial
-      - name: Start CI/CD Pipeline
-        run: echo "Iniciando pipeline de CI/CD para a branch ${{ github.event.pull_request.base.ref }}"
-
-      # 2. Checkout do código
+      # 1. Checkout do código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 3. Configurar Node.js para Cypress
+      # 2. Configurar Node.js para Cypress
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      # 4. Instalar dependências do projeto
-      - name: Install and update dependencies
-        run: |
-          npm install
-          npm update
+      # 3. Instalar dependências do projeto
+      - name: Install dependencies
+        run: npm install
 
-      # 5. Iniciar o servidor da aplicação
-      - name: Start application server
-        run: |
-          echo "Iniciando o servidor..."
-          npm start &
-        env:
-          PORT: 8080
-    
-      # 6. Aguardar o servidor estar acessível
-      - name: Wait for server to be ready
-        run: |
-          echo "Aguardando o servidor estar acessível em http://localhost:8080..."
-          npx wait-on http://localhost:8080 --timeout 60000
-    
-      # 7. Verificar se o servidor está rodando
-      - name: Check server status
-        run: |
-          curl -I http://localhost:8080 || echo "Servidor não está acessível!"
-     
-      # 8. Executar testes Cypress
+      # 4. Executar testes Cypress
       - name: Run Cypress tests
         run: npx cypress run
         env:
