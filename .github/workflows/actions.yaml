@@ -31,8 +31,10 @@ jobs:
           node-version: '16'
 
       # 4. Instalar dependências do projeto
-      - name: Install dependencies
-        run: npm install
+      - name: Install and update dependencies
+        run: |
+          npm install
+          npm update
 
       # 5. Iniciar o servidor da aplicação
       - name: Start application server
