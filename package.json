@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Projeto Integrador 3 com testes automatizados usando Cypress.",
   "scripts": {
-    "start": "node server.js",
+    "start": "http-server ./ -p 8080",
     "test": "npx cypress run",
     "test:open": "npx cypress open"
   },
