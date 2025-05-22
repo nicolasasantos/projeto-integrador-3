@@ -34,11 +34,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 5. Iniciar o servidor da aplicação
+       # 5. Iniciar o servidor da aplicação
       - name: Start application server
         run: npm start &
-        env:
-          PORT: 8080
 
       # 6. Aguardar o servidor estar acessível
       - name: Wait for server to be ready
