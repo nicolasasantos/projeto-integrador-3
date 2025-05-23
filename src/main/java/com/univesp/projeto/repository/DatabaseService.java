@@ -3,9 +3,11 @@ package com.univesp.projeto.repository;
 import com.univesp.projeto.model.Hole;
 import com.univesp.projeto.model.HoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -40,10 +42,43 @@ public class DatabaseService {
         template.update(query,hole.getName(),hole.getDate(),hole.getLatitude(),hole.getLongitude(),hole.getObservation(),hole.isFixed(),hole.getFotoId());
     }
 
-    public void updateHole(Hole hole){
-        String query = "UPDATE HOLE SET NAME = ?, DATE = ?, LATITUDE = ?, LONGITUDE = ?, OBS = ?, FIXED = ?, FOTO_ID = ? WHERE ID = ?";
-        template.update(query,hole.getName(),hole.getDate(),hole.getLatitude(),hole.getLongitude(),hole.getObservation(),hole.isFixed(),hole.getFotoId(),hole.getId());
+    public void updateHole(Hole hole) throws SQLException {
+        if (hole == null) {
+            throw new IllegalArgumentException("Hole não pode ser nulo");
+        }
+
+        if (template == null) {
+            throw new IllegalStateException("JdbcTemplate não inicializado");
+        }
+
+        try {
+            String query = "UPDATE HOLE SET NAME = ?, DATE = ?, LATITUDE = ?, " +
+                    "LONGITUDE = ?, OBS = ?, FIXED = ?, FOTO_ID = ? " +
+                    "WHERE ID = ?";
+
+            int resultado = template.update(query,
+                    validateString(hole.getName()),
+                    hole.getDate(),
+                    validateString(hole.getLatitude()),
+                    validateString(hole.getLongitude()),
+                    validateString(hole.getObservation()),
+                    hole.isFixed(),
+                    validateString(hole.getFotoId()),
+                    hole.getId()
+            );
+
+            if (resultado == 0) {
+                throw new SQLException("Nenhum registro foi atualizado");
+            }
+        } catch (DataAccessException e) {
+            throw new SQLException("Erro ao atualizar hole: " + e.getMessage());
+        }
     }
+
+    private String validateString(String value) {
+        return value != null ? value.trim() : "";
+    }
+
 
     public Long getMaxId(){
         Long maxId = null;

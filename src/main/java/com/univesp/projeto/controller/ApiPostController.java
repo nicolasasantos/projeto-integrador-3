@@ -42,20 +42,22 @@ public class ApiPostController {
                 if(gps == null){
                     gps = new double[]{-47.8906831,-22.0178682};
                 }
-
                 hole.setName(name);
                 hole.setFotoId(fileName);
+                hole.setObservation(observation);
                 hole.setDate(timeStamp);
                 hole.setLatitude(Double.toString(gps[1]));
                 hole.setLongitude(Double.toString(gps[0]));
             } else {
+                hole.setName(name);
+                hole.setObservation(observation);
                 hole.setFotoId(null);
                 hole.setDate(timeStamp);
                 hole.setLatitude("1");
                 hole.setLongitude("1");
             }
             db.addHole(hole);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

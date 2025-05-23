@@ -8,9 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -24,13 +22,14 @@ public class ApiPutController {
 
     public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/img";
 
-    @PutMapping(path = {"/api","/api"}, consumes = {"multipart/form-data"})
-    public ResponseEntity<Object> uploadImage(@RequestParam("name") String name,
+    @PutMapping(path = "/api/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<Object> uploadImage(@PathVariable("id") Long id,
+                                              @RequestParam("name") String name,
                                               @RequestParam("observation") String observation,
-                                              @RequestParam("id") Integer id,
                                               @RequestPart("foto") MultipartFile file) throws IOException {
         try {
-            Hole hole = new Hole();
+            Hole hole = db.getHoleById(id);
+            System.out.println(hole);
 
             Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
             System.out.println("Original file name, being uploaded: " + file.getOriginalFilename());
@@ -46,7 +45,6 @@ public class ApiPutController {
                     gps = new double[]{-47.8906831,-22.0178682};
                 }
 
-                hole.setId(id);
                 hole.setName(name);
                 hole.setFotoId(fileName);
                 hole.setObservation(observation);
@@ -59,6 +57,7 @@ public class ApiPutController {
                 hole.setLatitude("1");
                 hole.setLongitude("1");
             }
+
             db.updateHole(hole);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
