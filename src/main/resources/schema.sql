@@ -1,13 +1,12 @@
-drop table if exists hole;
+DROP TABLE IF EXISTS hole;
 
-create table hole
-(
-    id    serial not null primary key,
-    name   varchar(40) not null check (name <> ''),
-    date timestamp not  null,
-    latitude varchar(40) not null check (latitude <> ''),
-    longitude varchar(40) not null check (longitude <> ''),
-    obs varchar(200) check (obs <> ''),
-    fixed bool default false,
-    foto_id varchar(90) not null check (foto_id <> '')
-);
+CREATE TABLE hole (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(40) NOT NULL,
+  date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  latitude VARCHAR(40) NOT NULL,
+  longitude VARCHAR(40) NOT NULL,
+  obs VARCHAR(200),
+  fixed TINYINT(1) DEFAULT 0,
+  foto_id VARCHAR(90) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
