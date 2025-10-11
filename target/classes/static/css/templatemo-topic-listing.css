@@ -249,7 +249,7 @@ strong {
 -----------------------------------------*/
 .site-header {
   background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
-  padding-top: 150px;
+  padding-top: 110px;
   padding-bottom: 80px;
 }
 
@@ -658,10 +658,9 @@ blockquote {
   background-color: var(--section-bg-color);
   border-radius: var(--border-radius-small);
   font-family: var(--title-font-family);
-  font-size: var(--h4-font-size);
-  font-weight: var(--font-weight-bold);
+  font-size: var(--p-font-size);
   display: inline-block;
-  text-align: center;
+  text-align: left;
   margin: 30px;
   padding: 40px;
 }

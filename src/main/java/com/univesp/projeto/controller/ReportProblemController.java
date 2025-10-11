@@ -28,7 +28,6 @@ public class ReportProblemController {
         Long maxId = db.getMaxId();
         Hole Hole = new Hole();
         model.addAttribute("title","Univesp - Projeto Grupo 09");
-        model.addAttribute("grupo","Grupo 09");
         model.addAttribute("maxId",maxId+1);
         model.addAttribute("hole",Hole);
 
