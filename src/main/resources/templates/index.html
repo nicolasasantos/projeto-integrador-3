@@ -22,13 +22,292 @@
         <link th:href="@{/css/bootstrap-icons.css}" rel="stylesheet">
 
         <link th:href="@{/css/templatemo-topic-listing.css}" rel="stylesheet">
-<!--
-
-TemplateMo 590 topic listing
-
-https://templatemo.com/tm-590-topic-listing
-
--->
+        
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        
+        <style>
+            /* Garantir que o navbar fique no topo */
+            nav, header {
+                position: relative;
+                z-index: 9999 !important;
+            }
+            
+            .dashboard-section {
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                padding: 80px 0;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .dashboard-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+                opacity: 0.3;
+            }
+            
+            .stat-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 35px;
+                margin-bottom: 30px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+                transition: all 0.4s ease;
+                text-align: center;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+                transform: rotate(45deg);
+                transition: 0.5s;
+            }
+            
+            .stat-card:hover::before {
+                left: 100%;
+            }
+            
+            .stat-card:hover {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            }
+            
+            .stat-number {
+                font-size: 3.5rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 10px;
+                animation: countUp 2s ease-out;
+            }
+            
+            @keyframes countUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .stat-label {
+                color: #6c757d;
+                font-size: 1rem;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-weight: 700;
+            }
+            
+            .stat-icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: pulse 2s infinite;
+            }
+            
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+            
+            .map-container {
+                background: white;
+                border-radius: 25px;
+                padding: 30px;
+                box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+                margin-bottom: 40px;
+                position: relative;
+            }
+            
+            #map {
+                height: 600px;
+                border-radius: 20px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                border: 3px solid rgba(19, 84, 122, 0.2);
+                position: relative;
+                z-index: 1;
+            }
+            
+            .map-controls {
+                display: none;
+            }
+            
+            .map-toggle-btn {
+                display: none;
+            }
+            
+            .chart-container {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 35px;
+                margin-bottom: 30px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+                height: 400px;
+                transition: transform 0.3s;
+            }
+            
+            .chart-container:hover {
+                transform: translateY(-5px);
+            }
+            
+            .chart-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin-bottom: 25px;
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            
+            .info-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 35px;
+                margin-bottom: 30px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+                transition: transform 0.3s;
+            }
+            
+            .info-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .area-item {
+                padding: 18px;
+                border-bottom: 2px solid rgba(19, 84, 122, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: all 0.3s;
+                border-radius: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .area-item:hover {
+                background: linear-gradient(135deg, rgba(19, 84, 122, 0.05) 0%, rgba(128, 208, 199, 0.05) 100%);
+                transform: translateX(10px);
+                border-left: 4px solid #13547a;
+            }
+            
+            .area-item:last-child {
+                border-bottom: none;
+            }
+            
+            .badge-count {
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 25px;
+                font-weight: 700;
+                font-size: 1rem;
+                box-shadow: 0 5px 15px rgba(19, 84, 122, 0.3);
+                animation: slideIn 0.5s ease-out;
+            }
+            
+            @keyframes slideIn {
+                from { opacity: 0; transform: translateX(20px); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+            
+            .problem-tag {
+                display: inline-block;
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 30px;
+                margin: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                box-shadow: 0 5px 20px rgba(19, 84, 122, 0.3);
+                transition: all 0.3s;
+                animation: fadeIn 0.5s ease-out;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: scale(0.8); }
+                to { opacity: 1; transform: scale(1); }
+            }
+            
+            .problem-tag:hover {
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 10px 30px rgba(19, 84, 122, 0.5);
+            }
+            
+            .section-header {
+                text-align: center;
+                margin-bottom: 60px;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .section-header h2 {
+                font-size: 3rem;
+                font-weight: 800;
+                color: white;
+                margin-bottom: 20px;
+                text-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                animation: slideDown 1s ease-out;
+            }
+            
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-30px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .section-header p {
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 1.3rem;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            
+            .legend-item {
+                display: inline-flex;
+                align-items: center;
+                margin: 10px 15px;
+                font-weight: 600;
+                color: #333;
+            }
+            
+            .legend-marker {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                margin-right: 10px;
+                border: 3px solid white;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            }
+            
+            .loading-spinner {
+                text-align: center;
+                padding: 60px;
+                color: white;
+            }
+            
+            .loading-spinner i {
+                font-size: 3rem;
+                animation: spin 1s linear infinite;
+            }
+            
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        </style>
     </head>
     
     <body id="top">
@@ -37,24 +316,97 @@ https://templatemo.com/tm-590-topic-listing
 
             <div th:replace="~{layout/common-navbar :: navbar}"></div>
 
-
-            <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+            <!-- DASHBOARD SECTION -->
+            <section class="dashboard-section" id="section_1">
                 <div class="container">
-                    <div class="row justify-content-center">
+                    <div class="section-header">
+                        <h2>Dashboard de Reclamações</h2>
+                        <p>Visualização em tempo real das localidades afetadas na cidade</p>
+                    </div>
 
-                        <div class="col-lg-10 col-13 mx-auto">
-                            <h2 class="text-white text-center">Localidades afetadas na cidade</h2>
-                            <!--
-                            <iframe th:src="@{https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d98943.20605372173!2d-47.93725664090107!3d-22.01853470174511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b87726bb9dd181%3A0xd9d7d71505999bc!2zU8OjbyBDYXJsb3MsIFNQ!5e1!3m2!1spt-BR!2sbr!4v1708785197615!5m2!1spt-BR!2sbr}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            -->
+                    <!-- Cards de Estatísticas -->
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <i class="bi bi-exclamation-triangle stat-icon"></i>
+                                <div class="stat-number" id="totalCount">-</div>
+                                <div class="stat-label">Total de Reclamações</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <i class="bi bi-check-circle stat-icon text-success"></i>
+                                <div class="stat-number text-success" id="resolvedCount">-</div>
+                                <div class="stat-label">Resolvidas</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <i class="bi bi-clock-history stat-icon text-danger"></i>
+                                <div class="stat-number text-danger" id="pendingCount">-</div>
+                                <div class="stat-label">Pendentes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mapa -->
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <div class="map-container">
+                                <div class="text-center mb-3">
+                                    <div class="legend-item">
+                                        <div class="legend-marker" style="background-color: #dc3545;"></div>
+                                        <span>Pendente</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-marker" style="background-color: #28a745;"></div>
+                                        <span>Resolvido</span>
+                                    </div>
+                                </div>
+                                <div id="map"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico -->
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <div class="chart-container">
+                                <h3 class="chart-title">Evolução Mensal das Reclamações</h3>
+                                <canvas id="monthlyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informações Adicionais -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="info-card">
+                                <h3 class="chart-title">Top 5 Áreas Críticas</h3>
+                                <div id="topAreas">
+                                    <div class="loading-spinner">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        <p>Carregando dados...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="info-card">
+                                <h3 class="chart-title">Principais Problemas</h3>
+                                <div id="topProblems">
+                                    <div class="loading-spinner">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        <p>Carregando dados...</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-
-
-
+            <!-- Seção Como Reportar -->
             <section class="timeline-section section-padding" id="section_2">
                 <div class="section-overlay"></div>
 
@@ -217,6 +569,226 @@ https://templatemo.com/tm-590-topic-listing
         <script th:src="@{/js/jquery.sticky.js}"></script>
         <script th:src="@{/js/click-scroll.js}"></script>
         <script th:src="@{/js/custom.js}"></script>
+        
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        
+        <!-- Dashboard Script -->
+        <script>
+            let map;
+            let markers = [];
+
+            // Buscar dados da API
+            async function loadDashboardData() {
+                try {
+                    const response = await fetch('/api/dashboard/stats');
+                    const data = await response.json();
+                    
+                    // Atualizar cards com animação
+                    animateCount('totalCount', data.total);
+                    animateCount('resolvedCount', data.resolved);
+                    animateCount('pendingCount', data.pending);
+                    
+                    // Inicializar mapa
+                    initMap(data.coordinates);
+                    
+                    // Criar gráfico
+                    createMonthlyChart(data.monthlyData);
+                    
+                    // Mostrar top áreas
+                    displayTopAreas(data.topAreas);
+                    
+                    // Mostrar principais problemas
+                    displayTopProblems(data.topProblems);
+                    
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                    document.getElementById('totalCount').textContent = '0';
+                    document.getElementById('resolvedCount').textContent = '0';
+                    document.getElementById('pendingCount').textContent = '0';
+                }
+            }
+
+            // Animar contadores
+            function animateCount(elementId, target) {
+                const element = document.getElementById(elementId);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        element.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(current);
+                    }
+                }, 30);
+            }
+
+            // Inicializar mapa
+            function initMap(coordinates) {
+                if (coordinates.length === 0) {
+                    document.getElementById('map').innerHTML = '<div class="alert alert-info text-center p-5">Nenhuma reclamação encontrada ainda</div>';
+                    return;
+                }
+
+                // Calcular centro do mapa
+                const centerLat = coordinates.reduce((sum, c) => sum + c.lat, 0) / coordinates.length;
+                const centerLng = coordinates.reduce((sum, c) => sum + c.lng, 0) / coordinates.length;
+
+                map = L.map('map', { zoomControl: true }).setView([centerLat, centerLng], 13);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 18
+                }).addTo(map);
+
+                // Adicionar marcadores
+                coordinates.forEach(coord => {
+                    const icon = L.divIcon({
+                        className: 'custom-marker',
+                        html: `<div style="background-color: ${coord.fixed ? '#28a745' : '#dc3545'}; 
+                               width: 30px; height: 30px; border-radius: 50%; 
+                               border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+                               transition: transform 0.2s;"></div>`,
+                        iconSize: [30, 30]
+                    });
+
+                    const marker = L.marker([coord.lat, coord.lng], { icon: icon })
+                        .bindPopup(`
+                            <div style="min-width: 220px; font-family: 'Montserrat', sans-serif;">
+                                <h6 style="margin-bottom: 12px; font-weight: bold; color: #13547a;">${coord.name}</h6>
+                                <p style="margin: 8px 0;"><strong>Data:</strong> ${coord.date}</p>
+                                <p style="margin: 8px 0;"><strong>Status:</strong> 
+                                    <span style="color: ${coord.fixed ? '#28a745' : '#dc3545'}; font-weight: bold;">
+                                        ${coord.fixed ? '✅ Resolvido' : '⏳ Pendente'}
+                                    </span>
+                                </p>
+                                <p style="margin: 8px 0; font-size: 0.9em; color: #666;">
+                                    <strong>Observação:</strong> ${coord.observation || 'Sem observações'}
+                                </p>
+                            </div>
+                        `)
+                        .addTo(map);
+                    
+                    markers.push(marker);
+                });
+            }
+
+            // Criar gráfico mensal
+            function createMonthlyChart(monthlyData) {
+                if (!monthlyData || monthlyData.length === 0) return;
+                
+                const ctx = document.getElementById('monthlyChart');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: monthlyData.map(d => d.month),
+                        datasets: [{
+                            label: 'Reclamações',
+                            data: monthlyData.map(d => d.count),
+                            borderColor: '#13547a',
+                            backgroundColor: 'rgba(19, 84, 122, 0.2)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 4,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: '#13547a',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0,0,0,0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                cornerRadius: 8
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1,
+                                    font: {
+                                        size: 12,
+                                        weight: '600'
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(19, 84, 122, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 12,
+                                        weight: '600'
+                                    }
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Mostrar top áreas
+            function displayTopAreas(topAreas) {
+                const container = document.getElementById('topAreas');
+                if (!topAreas || topAreas.length === 0) {
+                    container.innerHTML = '<p class="text-muted text-center p-4">Nenhum dado disponível</p>';
+                    return;
+                }
+
+                container.innerHTML = topAreas.map((area, index) => `
+                    <div class="area-item" style="animation-delay: ${index * 0.1}s;">
+                        <div>
+                            <strong style="font-size: 1.1rem; color: #13547a;">#${index + 1}</strong>
+                            <span style="margin-left: 10px; color: #333;">${area.areaName}</span>
+                        </div>
+                        <span class="badge-count">${area.count} reclamações</span>
+                    </div>
+                `).join('');
+            }
+
+            // Mostrar principais problemas
+            function displayTopProblems(topProblems) {
+                const container = document.getElementById('topProblems');
+                if (!topProblems || topProblems.length === 0) {
+                    container.innerHTML = '<p class="text-muted text-center p-4">Nenhum dado disponível</p>';
+                    return;
+                }
+
+                container.innerHTML = topProblems.map((problem, index) => `
+                    <span class="problem-tag" style="animation-delay: ${index * 0.1}s;">
+                        ${problem.word} <strong>(${problem.count})</strong>
+                    </span>
+                `).join('');
+            }
+
+            // Carregar dados ao carregar a página
+            window.addEventListener('load', loadDashboardData);
+        </script>
 
     </body>
 </html>
