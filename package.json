@@ -1,0 +1,24 @@
+{
+  "name": "projeto-integrador-3",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000p\u0000r\u0000o\u0000j\u0000e\u0000t\u0000o\u0000-\u0000i\u0000n\u0000t\u0000e\u0000g\u0000r\u0000a\u0000d\u0000o\u0000r\u0000-\u00003\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicolasasantos/projeto-integrador-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nicolasasantos/projeto-integrador-3/issues"
+  },
+  "homepage": "https://github.com/nicolasasantos/projeto-integrador-3#readme",
+  "devDependencies": {
+    "cypress": "^15.6.0"
+  }
+}
