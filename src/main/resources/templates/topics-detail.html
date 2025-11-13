@@ -8,6 +8,8 @@
         <meta name="author" content="">
 
         <title th:text="${title}"> </title>
+        <link rel="shortcut icon" type="image/jpg" href="https://assets.infra.grancursosonline.com.br/projeto/univesp-fundacao-universidade-virtual-do-estado-de-sao-paulo-1696278417.jpg"/>
+
 
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,18 +47,15 @@ https://templatemo.com/tm-590-topic-listing
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="index.html">Início</a></li>
-
                                     <li class="breadcrumb-item active" aria-current="page">Descrição do Problema</li>
                                 </ol>
                             </nav>
 
-                            <h2 class="text-white">Descrição do<br> Problema</h2>
+                            <h2 class="text-white text-nowrap">Descrição do problema</h2>
                         </div>
 
                         <div class="col-lg-5 col-12">
                             <div class="topics-detail-block bg-white shadow-lg">
-                                <img th:src="@{/images/topics/undraw_Remote_design_team_re_urdx.png}" class="topics-detail-block-image img-fluid">
-<!--                                <h5 class="mb-2" th:text="${item.name}">Web Design</h5>-->
                             </div>
                         </div>
 
@@ -70,58 +69,13 @@ https://templatemo.com/tm-590-topic-listing
                     <div class="row">
 
                         <div class="col-lg-8 col-12 m-auto">
-                            <h3 class="mb-4" th:text="${'Problema relatado por: ' + item.name}">Introduction to Web Design</h3>
-
-                            <br>
-<!--                            <p th:text="${ item.observation}">So how can you stand out, do something unique and interesting, build an online business, and get paid enough to change life. Please visit TemplateMo website to download free website templates.</p>-->
-
-<!--                            <p><strong>There are so many ways to make money online</strong>. Below are several platforms you can use to find success. Keep in mind that there is no one path everyone can take. If that were the case, everyone would have a million dollars.</p>-->
-
-                            <blockquote th:text="${item.observation}">>
-                                Freelancing your skills isn’t going to make you a millionaire overnight.
-                            </blockquote>
-
-<!--                            <div class="row my-4">-->
-<!--                                <div class="col-lg-6 col-md-6 col-12">-->
-<!--                                    <img th:src="@{/images/businesswoman-using-tablet-analysis.jpg}" class="topics-detail-block-image img-fluid">-->
-<!--                                </div>-->
-
-<!--                                <div class="col-lg-6 col-md-6 col-12 mt-4 mt-lg-0 mt-md-0">-->
-<!--                                    <img th:src="@{/images/colleagues-working-cozy-office-medium-shot.jpg}" class="topics-detail-block-image img-fluid">-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-<!--                            <p>Most people start with freelancing skills they already have as a side hustle to build up income. This extra cash can be used for a vacation, to boost up savings, investing, build business.</p>-->
+                            <h3 class="mb-4" th:text="${'Problema relatado por: ' + item.name}"></h3>
+                            <blockquote th:text="${item.observation}"></blockquote>
+                            <!--<blockquote th:img="${item.image != null ? @{/images/} + ${item.image} : ''}" alt="Imagem do problema" style="max-width: 100%; height: auto;"></blockquote>-->
                         </div>
-
                     </div>
                 </div>
             </section>
-
-
-<!--            <section class="section-padding section-bg">-->
-<!--                <div class="container">-->
-<!--                    <div class="row justify-content-center">-->
-
-<!--                        <div class="col-lg-5 col-12">-->
-<!--                            <img th:src="@{/images/rear-view-young-college-student.jpg}" class="newsletter-image img-fluid" alt="">-->
-<!--                        </div>-->
-
-<!--                        <div class="col-lg-5 col-12 subscribe-form-wrap d-flex justify-content-center align-items-center">-->
-<!--                            <form class="custom-form subscribe-form" action="#" method="post" role="form">-->
-<!--                                <h4 class="mb-4 pb-2">Get Newsletter</h4>-->
-
-<!--                                <input type="email" name="subscribe-email" id="subscribe-email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email Address" required="">-->
-
-<!--                                <div class="col-lg-12 col-12">-->
-<!--                                    <button type="submit" class="form-control">Subscribe</button>-->
-<!--                                </div>-->
-<!--                            </form>-->
-<!--                        </div>-->
-
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </section>-->
         </main>
 
         <div th:replace="~{layout/common-footer :: footer}"></div>

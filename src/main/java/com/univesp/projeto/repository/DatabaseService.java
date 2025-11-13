@@ -25,7 +25,7 @@ public class DatabaseService {
 
 
     public List<Hole> getHoles(){
-        String query = "SELECT * FROM HOLE";
+        String query = "SELECT * FROM HOLE ORDER BY ID DESC";
         return template.query(query,new HoleMapper());
     }
     public int deleteHoleById(long id){

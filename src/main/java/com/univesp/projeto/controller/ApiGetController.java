@@ -27,7 +27,6 @@ public class ApiGetController {
     public Map<String, String> getById(@PathVariable("id") Long id, ModelMap model){
         Hole item = db.getHoleById(id);
         model.addAttribute("title","Univesp - Projeto Grupo 09");
-        model.addAttribute("grupo","Grupo 09");
         model.addAttribute("item",item);
         model.addAttribute("folder",UPLOAD_DIRECTORY);
         System.out.println("ShowDetailById  ID passed: "+id+", object fetched: "+item);
@@ -54,7 +53,6 @@ public class ApiGetController {
         List<Hole> items = db.getHoles();
 
         model.addAttribute("title", "Univesp - Projeto Grupo 09");
-        model.addAttribute("grupo", "Grupo 09");
         model.addAttribute("folder", UPLOAD_DIRECTORY);
 
         List<Map<String, String>> dataList = new ArrayList<>();

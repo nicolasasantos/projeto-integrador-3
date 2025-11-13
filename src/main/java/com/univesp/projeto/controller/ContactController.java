@@ -9,7 +9,6 @@ public class ContactController {
     @GetMapping({"/contact","/contact.html"})
     public String showContact(ModelMap model){
         model.addAttribute("title","Univesp - Projeto Grupo 09");
-        model.addAttribute("grupo","Grupo 09");
         
         return "contact";
     }

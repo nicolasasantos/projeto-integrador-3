@@ -1,0 +1,64 @@
+name: Auto Promote Branches
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  promote:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # necessário para fazer merges corretamente
+
+      - name: Set up Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Determine promotion target
+        id: promotion
+        run: |
+          base_branch="${{ github.event.pull_request.base.ref }}"
+          echo "Base branch: $base_branch"
+
+          if [ "$base_branch" == "develop" ]; then
+            echo "next_branch=qa" >> $GITHUB_OUTPUT
+          elif [ "$base_branch" == "qa" ]; then
+            echo "next_branch=main" >> $GITHUB_OUTPUT
+          elif [[ "$base_branch" == feature/* ]]; then
+            echo "next_branch=develop" >> $GITHUB_OUTPUT
+          else
+            echo "next_branch=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Promote to next environment
+        if: steps.promotion.outputs.next_branch != ''
+        run: |
+          NEXT="${{ steps.promotion.outputs.next_branch }}"
+          CURRENT="${{ github.event.pull_request.base.ref }}"
+
+          echo "Promovendo código de $CURRENT → $NEXT"
+
+          git fetch origin $NEXT
+          git checkout $NEXT
+          git merge origin/$CURRENT --no-edit || true
+
+          # Caso haja conflitos, eles são marcados para resolver manualmente
+          git push origin $NEXT
+
+      - name: Create PR if merge fails
+        if: failure()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: ${{ steps.promotion.outputs.next_branch }}
+          branch: ${{ github.event.pull_request.base.ref }}
+          title: "Promoção automática: ${{ github.event.pull_request.base.ref }} → ${{ steps.promotion.outputs.next_branch }}"
+          body: |
+            Merge automático falhou devido a conflitos.
+            Por favor, resolva manualmente e feche este PR.

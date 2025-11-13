@@ -20,7 +20,6 @@ public class TopicDetailController {
     @GetMapping({"/topics-detail","/topics-detail.html"})
     public String showTopicDetail(ModelMap model){
         model.addAttribute("title","Univesp - Projeto Grupo 09");
-        model.addAttribute("grupo","Grupo 09");
 
         return "topics-detail.html";
     }
@@ -29,7 +28,6 @@ public class TopicDetailController {
     public String showDetailById(@PathVariable("id") Long id,  ModelMap model){
         Hole item = db.getHoleById(id);
         model.addAttribute("title","Univesp - Projeto Grupo 09");
-        model.addAttribute("grupo","Grupo 09");
         model.addAttribute("item",item);
         model.addAttribute("folder",UPLOAD_DIRECTORY);
         System.out.println("ShowDetailById  ID passed: "+id+", object fetched: "+item);
