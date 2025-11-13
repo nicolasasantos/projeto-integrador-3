@@ -8,7 +8,6 @@ public class HomeController {
     @GetMapping({"/","/index.html","index"})
     public String showIndex(ModelMap model){
         model.addAttribute("title","Univesp - Projeto Grupo 09");
-        model.addAttribute("grupo","Grupo 09");
 
         return "index";
     }
